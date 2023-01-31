@@ -50,12 +50,22 @@ def swap_toy(email1, toy1, email2, toy2):
     user1["toys"].append(user2_toy[0])
     # Add user1's toy to user2's toys list
     user2["toys"].append(user1_toy[0])
+    #use remove builtin function
+    user2["toys"].remove(user2_toy[0])
+    user1["toys"].remove(user1_toy[0])
+
+    results = [user1, user2]
+    # user1_ref = db.collection(u'users').document(email1)
+    # user1_ref.set(user1.to_Json())
+    
+    # user2_ref = db.collection(u'users').document(email2)
+    # user2_ref.set(user2.to_Json())
     
     # TODO: Remove swapped items from list
     # ind = get_toy_index(user1["toys"], user1_toy)
     # user1["toys"][ind].clear()
     
-    return make_response(jsonify(user1),200)
+    return make_response(jsonify(results),200)
 
 def get_toy_index(toys, toy):
     for i in range(len(toys)):
