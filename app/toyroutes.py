@@ -42,6 +42,8 @@ def swap_toy(email1, toy1, email2, toy2):
     
     # Get the toy to be swapped for user1
     user1_toy = [toy for toy in user1["toys"] if toy["name"].upper() == toy1.upper()]
+    if(len(user1_toy) == 0):
+        return make_response(f"Cannot find {toy1} in {email1} toys list ",400)
     
     # Get the user referenced by email2
     user2_ref = users_ref.document(email2)
@@ -49,6 +51,9 @@ def swap_toy(email1, toy1, email2, toy2):
     
     # Get the toy to be swapped for user2
     user2_toy = [toy for toy in user2["toys"] if toy["name"].upper() == toy2.upper()]
+    
+    if(len(user2_toy) == 0):
+        return make_response(f"Cannot find {toy2} in {email2} toys list" ,400)
     
     
     # Add user2's toy to user1's toys list
