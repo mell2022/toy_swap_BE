@@ -37,14 +37,29 @@ def swap_toy(email1, toy1, email2, toy2):
     users_ref = db.collection(u'users')
     
     # Get the user referenced by email1
-    user1 = users_ref.document(email1).get().to_dict()
-    # Get the toy to be swapped for user1
-    user1_toy = [toy for toy in user1["toys"] if toy["name"] == toy1]
+    #user1 = users_ref.document(email1).get().to_dict()
+    user1_ref = db.collection(u'users').document(email1)
+    user1 = user1_ref.get().to_dict()
+    print("user1>>>")
+    print(user1)
     
+    user2_ref = db.collection(u'users').document(email2)
+    user2 = user2_ref.get().to_dict()
+    
+    print("user2>>>")
+    print(user2)
+    # Get the toy to be swapped for user1
+    user1_toy = [toy for toy in user1["toys"] if toy["name"].upper() == toy1.upper()]
+    
+    print("user1_toy>>>")
+    print(user1_toy)
     # Get the user referenced by email2
     user2 = users_ref.document(email2).get().to_dict()
     # Get the toy to be swapped for user2
-    user2_toy = [toy for toy in user2["toys"] if toy["name"] == toy2]
+    user2_toy = [toy for toy in user2["toys"] if toy["name"].upper() == toy2.upper()]
+    
+    print("user2_toy>>>")
+    print(user2_toy)
     
     # Add user2's toy to user1's toys list
     user1["toys"].append(user2_toy[0])
@@ -56,10 +71,10 @@ def swap_toy(email1, toy1, email2, toy2):
 
     results = [user1, user2]
     # user1_ref = db.collection(u'users').document(email1)
-    # user1_ref.set(user1.to_Json())
+    user1_ref.set(user1)
     
     # user2_ref = db.collection(u'users').document(email2)
-    # user2_ref.set(user2.to_Json())
+    user2_ref.set(user2)
     
     # TODO: Remove swapped items from list
     # ind = get_toy_index(user1["toys"], user1_toy)
@@ -67,10 +82,5 @@ def swap_toy(email1, toy1, email2, toy2):
     
     return make_response(jsonify(results),200)
 
-def get_toy_index(toys, toy):
-    for i in range(len(toys)):
-        if toys[i]["name"] == toy["name"]:
-            print(i)
-            return i 
 
 
