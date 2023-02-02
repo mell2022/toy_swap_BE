@@ -20,7 +20,6 @@ my_credentials = {
     "client_x509_cert_url": os.environ.get("CLIENT_X509_CERT_URL")
 }
 
-# cred = credentials.Certificate('/Users/melleygebretatios/Developers/capstone/toyswap-0125-30fa05cd6bd3.json')
 cred = credentials.Certificate(my_credentials)
 app = firebase_admin.initialize_app(cred)
 db = firestore.client()
