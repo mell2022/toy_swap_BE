@@ -1,4 +1,5 @@
 # from app import db
+import os
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
@@ -6,7 +7,21 @@ from app.models.toy import Toy, User
 from flask import Blueprint, request, jsonify, make_response, abort
 
 # Use a service account to access our firebase
-cred = credentials.Certificate('/Users/melleygebretatios/Developers/capstone/toyswap-0125-30fa05cd6bd3.json')
+my_credentials = {
+    "type": "service_account",
+    "project_id": "toyswap-0125",
+    "private_key_id": os.environ.get("PRIVATE_KEY_ID"),
+    "private_key": os.environ.get("PRIVATE_KEY").replace(r'\n', '\n'),
+    "client_email": os.environ.get("CLIENT_EMAIL"),
+    "client_id": os.environ.get("CLIENT_ID"),
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": os.environ.get("CLIENT_X509_CERT_URL")
+}
+
+# cred = credentials.Certificate('/Users/melleygebretatios/Developers/capstone/toyswap-0125-30fa05cd6bd3.json')
+cred = credentials.Certificate(my_credentials)
 app = firebase_admin.initialize_app(cred)
 db = firestore.client()
 
