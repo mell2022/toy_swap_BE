@@ -73,7 +73,7 @@ def create_user(email):
     doc_ref.set(request_body)
     return make_response(request_body,201)
 
-# Swap toys using email and toy name
+# Swap toys using email and toy name only
 @toys_bp.route("/swap/<email1>/<toy1>/<email2>/<toy2>", methods=["POST"])
 def swap_toy(email1, toy1, email2, toy2):
     # Get users collection
