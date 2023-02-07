@@ -26,18 +26,46 @@ db = firestore.client()
 
 toys_bp = Blueprint("toys_bp", __name__, url_prefix="/toys")
 
+# Returns a user by email
 @toys_bp.route("/<email>", methods=["GET"])
 def get_one_user(email):
     users_ref = db.collection(u'users')
     user = users_ref.document(email).get()
     return jsonify(user.to_dict()), 200
 
+# Returns all users. TODO: Deprecated
 @toys_bp.route("", methods=["GET"])
-def get_all_toys():
+def get_all():
     users_ref = db.collection(u'users')
     all_users = [doc.to_dict() for doc in users_ref.stream()]
     return jsonify(all_users), 200
 
+# Return all toys with owner's info
+@toys_bp.route("/all", methods=["GET"])
+def get_all_toys():
+    users_ref = db.collection(u'users')
+    all_users = [doc.to_dict() for doc in users_ref.stream()]
+    all_toys = []
+    print("All users", all_users)
+    for user in all_users:
+        toys = user["toys"]
+        print("All toys", toys)
+        for toy in toys:
+            new_toy = toy
+            new_toy["owner_email"] = user["email"]
+            new_toy["owner_first"] = user["first"]
+            new_toy["owner_last"] = user["last"]
+            all_toys.append(new_toy)
+    return jsonify(all_toys), 200
+
+# Returns all users
+@toys_bp.route("/users", methods=["GET"])
+def get_all_users():
+    users_ref = db.collection(u'users')
+    all_users = [doc.to_dict() for doc in users_ref.stream()]
+    return jsonify(all_users), 200
+
+# Creates a user by email
 @toys_bp.route("/<email>", methods=["POST"])
 def create_user(email):
     request_body = request.get_json()
@@ -45,6 +73,7 @@ def create_user(email):
     doc_ref.set(request_body)
     return make_response(request_body,201)
 
+# Swap toys using email and toy name
 @toys_bp.route("/swap/<email1>/<toy1>/<email2>/<toy2>", methods=["POST"])
 def swap_toy(email1, toy1, email2, toy2):
     # Get users collection

@@ -2,11 +2,15 @@
 # from flask import Blueprint, jsonify
 
 class Toy:
-    def __init__(self, name, brand, category, imageurl):
+    def __init__(self, name, brand, category, imageurl, description, owner_email, owner_first, owner_last):
         self.name = name
         self.brand = brand
         self.category = category
         self.imageurl = imageurl
+        self.description = description
+        self.owner_email = owner_email
+        self.owner_first = owner_first
+        self.owner_last = owner_last
     
     
 # toy = [
@@ -32,7 +36,9 @@ class User:
             first= req_body["first"],
             last= req_body["last"],
             email= req_body["email"],
-            toys= Toy(req_body["name"],req_body["brand"],req_body["category"],req_body["imageurl"])
+            toys= Toy(req_body["name"],req_body["brand"],req_body["category"]
+                    ,req_body["imageurl"],req_body["description"]
+                    ,req_body["owner_email"],req_body["owner_first"],req_body["owner_last"])
         )    
         
     
