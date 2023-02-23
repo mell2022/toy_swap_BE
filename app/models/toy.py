@@ -1,5 +1,3 @@
-# from app import db
-# from flask import Blueprint, jsonify
 
 class Toy:
     def __init__(self, name, brand, category, imageurl, description, owner_email, owner_first, owner_last):
@@ -12,13 +10,6 @@ class Toy:
         self.owner_first = owner_first
         self.owner_last = owner_last
     
-    
-# toy = [
-#     Toy(1, "Mirabel", "telecom"),
-#     Toy(2, "Isabella", "Encanto"),
-#     Toy(3, "Bruno", "Disney"),
-# ]
-
 class User:
     def __init__(self,first,last, email, toys=[]):
         self.first = first
